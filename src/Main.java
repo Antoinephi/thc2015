@@ -124,17 +124,22 @@ public class Main {
 		Coord c2 = null;
 		if(maxDimY+1 < nbColumn)
 			c2 = getBestPart(begX, begY, maxDimX, maxDimY+1);
+		Coord c3 = null;
+		if(maxDimX+1 < nbLine && maxDimY+1 < nbColumn)
+			c3 = getBestPart(begX, begY, maxDimX+1, maxDimY+1);
 
-		if(c1 == null)
+		if(c1 == null && c2 != null)
 			return c2;
-		else if(c2 == null)
+		else if(c2 == null && c1 != null)
 			return c1;
-		else if(Math.abs(c1.x-begX)*Math.abs(c1.y-begY) < Math.abs(c2.x-begX)*Math.abs(c2.y-begY)) {
+		else if(c2 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) < Math.abs(c2.x-begX)*Math.abs(c2.y-begY)) {
 			return c1;
 		}
-		else {
+		else if(c2 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) >= Math.abs(c2.x-begX)*Math.abs(c2.y-begY)){
 			return c2;
 		}
+		else
+			return c3;
 	}
 
 	private static boolean partAccepted(int x1, int y1, int x2, int y2) {
