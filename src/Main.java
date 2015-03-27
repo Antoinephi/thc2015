@@ -22,11 +22,11 @@ class Coord {
 }
 
 class Part {
-	public Part(int i, int j, int x, int y) {
-		this.x1 = i;
-		this.x2 = j;
-		this.y1 = x;
-		this.y2 = y;
+	public Part(int x1, int y1, int x2, int y2) {
+		this.x1 = x1;
+		this.x2 = x2;
+		this.y1 = y1;
+		this.y2 = y2;
 	}
 	public int x1;
 	public int x2;
@@ -79,7 +79,7 @@ public class Main {
 			for(int j=0; j<nbColumn; j++) {
 				System.out.println(i+":"+j);
 				Coord c1 = getBestPart(i, j, 2, 2);
-				/*System.out.println(c1 != null ? "OK("+c1.x+";"+c1.y+")" : "KO");*/
+				System.out.println(c1 != null ? "OK("+c1.x+";"+c1.y+")" : "KO");
 				if(c1 != null)
 					parts.add(new Part(i, j, c1.x, c1.y));
 			}
@@ -159,14 +159,14 @@ public class Main {
 		for(int i=0; i<parts.size(); i++) {
 			/*if(r1.intersects(new Rectangle(parts.get(i).x1, parts.get(i).y1, parts.get(i).x2-parts.get(i).x1, parts.get(i).y2-parts.get(i).y1)))
 				return false;*/
-			if((x1 >= parts.get(i).x1 && x1 < parts.get(i).x2 ) || (y1 >= parts.get(i).y1 && y1 < parts.get(i).y2)
-					|| (x2 >= parts.get(i).x1 && x1 < parts.get(i).x2 ) || (y2 >= parts.get(i).y1 && y1 < parts.get(i).y2))
+			if((x1 >= parts.get(i).x1 && x1 <= parts.get(i).x2 ) || (y1 >= parts.get(i).y1 && y1 <= parts.get(i).y2)
+					|| (x2 >= parts.get(i).x1 && x1 <= parts.get(i).x2 ) || (y2 >= parts.get(i).y1 && y1 <= parts.get(i).y2))
 					return false;
 		}
 		
 		
 		
-		return nbH >= minHPerPart && Math.abs(x2-x1)*Math.abs(y2-y1) <= maxCasePerPart;
+		return nbH >= minHPerPart && Math.abs(x2-x1+1)*Math.abs(y2-y1+1) <= maxCasePerPart;
 	}
 
 }
