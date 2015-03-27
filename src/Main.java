@@ -132,11 +132,11 @@ public class Main {
 			return c2;
 		else if(c2 == null && c1 != null)
 			return c1;
-		else if(c2 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) < Math.abs(c2.x-begX)*Math.abs(c2.y-begY)) {
-			return c1;
-		}
-		else if(c2 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) >= Math.abs(c2.x-begX)*Math.abs(c2.y-begY)){
+		else if(c1 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) < Math.abs(c2.x-begX)*Math.abs(c2.y-begY)) {
 			return c2;
+		}
+		else if(c1 != null && c2 != null && Math.abs(c1.x-begX)*Math.abs(c1.y-begY) >= Math.abs(c2.x-begX)*Math.abs(c2.y-begY)){
+			return c1;
 		}
 		else
 			return c3;
@@ -159,14 +159,14 @@ public class Main {
 		/*
 		 * TODO collision
 		 */
-		/* Rectangle r1 = new Rectangle(x1, y1, x2-x1, y2-y1);*/
+		Rectangle r1 = new Rectangle(x1, y1, x2-x1+1, y2-y1+1);
 		
 		for(int i=0; i<parts.size(); i++) {
-			/*if(r1.intersects(new Rectangle(parts.get(i).x1, parts.get(i).y1, parts.get(i).x2-parts.get(i).x1, parts.get(i).y2-parts.get(i).y1)))
-				return false;*/
-			if((x1 >= parts.get(i).x1 && x1 <= parts.get(i).x2 ) || (y1 >= parts.get(i).y1 && y1 <= parts.get(i).y2)
+			if(r1.intersects(new Rectangle(parts.get(i).x1, parts.get(i).y1, parts.get(i).x2+1-parts.get(i).x1, parts.get(i).y2-parts.get(i).y1+1)))
+				return false;
+			/*if((x1 >= parts.get(i).x1 && x1 <= parts.get(i).x2 ) || (y1 >= parts.get(i).y1 && y1 <= parts.get(i).y2)
 					|| (x2 >= parts.get(i).x1 && x1 <= parts.get(i).x2 ) || (y2 >= parts.get(i).y1 && y1 <= parts.get(i).y2))
-					return false;
+					return false;*/
 		}
 		
 		
