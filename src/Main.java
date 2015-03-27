@@ -66,7 +66,7 @@ public class Main {
 		 * Algorithm
 		 */
 		
-		Coord c1 = getBestPart(0, 0, 2);
+		Coord c1 = getBestPart(0, 0, 2, 2);
 		if(c1 != null)
 			System.out.println("x="+c1.x+",y="+c1.y);
 		else
@@ -87,25 +87,52 @@ public class Main {
 	}
 
 	private static Coord getBestPart(int begX, int begY, int maxDimX, int maxDimY) {
-		
-		while(true) {
-			for(int i=0; i<maxDimX; i++) {
-				for(int j=0; j<maxDimY; j++) {
-					if(partAccepted(begX, begY, i, j)) {
-						return new Coord(begX+i, begY+j);
-					}
+		/*
+		for(int i=0; i<maxDimX; i++) {
+			for(int j=0; j<maxDimY; j++) {
+				if(partAccepted(begX, begY, i, j)) {
+					return new Coord(begX+i, begY+j);
 				}
 			}
-			
-			Coord1 = getBestPart(int begX, int begY, int maxDimX, int maxDimY);
-			
+		}*/
+		
+		System.out.println(begX+" "+begY+" "+maxDimX+" "+maxDimY);
+		
+		if(maxDimX*maxDimY > maxCasePerPart)
+			return null;
+		
+		if(partAccepted(begX, begY, begX+maxDimX, begY+maxDimY)) {
+			return new Coord(begX+maxDimX, begY+maxDimY);
+		}
+
+		
+		Coord c1 = null;
+		if(maxDimX+1 < nbLine)
+			c1 = getBestPart(begX, begY, maxDimX+1, maxDimY);
+		Coord c2 = null;
+		if(maxDimY+1 < nbColumn)
+			c2 = getBestPart(begX, begY, maxDimX, maxDimY+1);
+
+		if(c1 == null)
+			return c2;
+		else if(c2 == null)
+			return c1;
+		else if(Math.abs(c1.x-begX)*Math.abs(c1.y-begY) < Math.abs(c2.x-begX)*Math.abs(c2.y-begY)) {
+			return c1;
+		}
+		else {
+			return c2;
 		}
 	}
 
 	private static boolean partAccepted(int x1, int y1, int x2, int y2) {
 		int nbH = 0;
-		for(int i=x1; i<x2; i++) {
-			for(int j=y1; j<y2; j++) {
+		
+		if(x2 >= nbLine || y2 >= nbColumn)
+			return false;
+		
+		for(int i=x1; i<=x2; i++) {
+			for(int j=y1; j<=y2; j++) {
 				if(pizza[i][j] == CaseType.H) {
 					nbH++;
 				}
@@ -115,6 +142,8 @@ public class Main {
 		/*
 		 * TODO collision
 		 */
+		
+		System.out.println(nbH+" "+Math.abs(x2-x1)*Math.abs(y2-y1));
 		
 		return nbH >= minHPerPart && Math.abs(x2-x1)*Math.abs(y2-y1) <= maxCasePerPart;
 	}
