@@ -1,5 +1,5 @@
+import java.awt.Rectangle;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,6 +22,12 @@ class Coord {
 }
 
 class Part {
+	public Part(int i, int j, int x, int y) {
+		this.x1 = i;
+		this.x2 = j;
+		this.y1 = x;
+		this.y2 = y;
+	}
 	public int x1;
 	public int x2;
 	public int y1;
@@ -37,6 +43,7 @@ public class Main {
 	static int minHPerPart;
 	static int maxCasePerPart;
 	static CaseType[][] pizza;
+	static List<Part> parts;
 	
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader reader = new BufferedReader(new FileReader("data/test_round.in"));
@@ -60,17 +67,24 @@ public class Main {
 			}
 		}
 		
-		List<Part> parts = new ArrayList<Part>();
+		parts = new ArrayList<Part>();
 		
 		/*
 		 * Algorithm
 		 */
 		
-		Coord c1 = getBestPart(0, 0, 2, 2);
-		if(c1 != null)
-			System.out.println("x="+c1.x+",y="+c1.y);
-		else
-			System.out.println("fuck");
+		
+		
+		for(int i=0; i<nbLine; i++) {
+			for(int j=0; j<nbColumn; j++) {
+				System.out.println(i+":"+j);
+				Coord c1 = getBestPart(i, j, 2, 2);
+				/*System.out.println(c1 != null ? "OK("+c1.x+";"+c1.y+")" : "KO");*/
+				if(c1 != null)
+					parts.add(new Part(i, j, c1.x, c1.y));
+			}
+		}
+
 		
 		/*
 		 * Output
@@ -95,8 +109,6 @@ public class Main {
 				}
 			}
 		}*/
-		
-		System.out.println(begX+" "+begY+" "+maxDimX+" "+maxDimY);
 		
 		if(maxDimX*maxDimY > maxCasePerPart)
 			return null;
@@ -142,8 +154,17 @@ public class Main {
 		/*
 		 * TODO collision
 		 */
+		/* Rectangle r1 = new Rectangle(x1, y1, x2-x1, y2-y1);*/
 		
-		System.out.println(nbH+" "+Math.abs(x2-x1)*Math.abs(y2-y1));
+		for(int i=0; i<parts.size(); i++) {
+			/*if(r1.intersects(new Rectangle(parts.get(i).x1, parts.get(i).y1, parts.get(i).x2-parts.get(i).x1, parts.get(i).y2-parts.get(i).y1)))
+				return false;*/
+			if((x1 >= parts.get(i).x1 && x1 < parts.get(i).x2 ) || (y1 >= parts.get(i).y1 && y1 < parts.get(i).y2)
+					|| (x2 >= parts.get(i).x1 && x1 < parts.get(i).x2 ) || (y2 >= parts.get(i).y1 && y1 < parts.get(i).y2))
+					return false;
+		}
+		
+		
 		
 		return nbH >= minHPerPart && Math.abs(x2-x1)*Math.abs(y2-y1) <= maxCasePerPart;
 	}
